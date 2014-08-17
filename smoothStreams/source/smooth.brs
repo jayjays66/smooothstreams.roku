@@ -6,24 +6,76 @@ Function login() as object
     return showLoggingInDialog()
 End Function
 
-function showLoggingInDialog() as object
-    screen = CreateObject("roOneLineDialog")
+function showLoggingInDialog() as boolean
+    loggedIn=false
+    while not loggedIn
+        if NOT checkConfig() then
+            showConfigScreen(true)
+        else
+            screen = CreateObject("roOneLineDialog")
+            port = CreateObject("roMessagePort")
+            screen.SetMessagePort(port)
+            screen.SetTitle("Logging in to " + RegRead("Service"))
+            screen.ShowBusyAnimation()
+            screen.show()
+            loginRequest = CreateObject("roUrlTransfer")
+            loginUrl=getAuthServer() + "?username="+ loginRequest.escape(RegRead("Username")) + "&password=" + loginRequest.escape(RegRead("Password")) +"&site=" + loginRequest.escape(getLoginSite())
+            loginRequest.SetURL(loginUrl)
+            m.response = ParseJson(loginRequest.GetToString())
+            if m.response=invalid then
+                'error connecting to service
+                error=true
+            else if  m.response.error<>invalid then
+                'error from server
+                error=true
+            else
+                loadSchedule(screen)
+                loggedin=true
+                return true
+            end if
+            if error=true
+                errorResponse=showErrorDialog()
+                if errorResponse=1 then
+                    return false
+                    exit while
+                endif
+            endif
+        endif
+    end while
+    screen.close()
+End Function
+function showErrorDialog() as integer
+    screen = CreateObject("roMessageDialog")
     port = CreateObject("roMessagePort")
     screen.SetMessagePort(port)
-    screen.SetTitle("Logging into " +RegRead("Service"))
-    screen.ShowBusyAnimation()
-    screen.show()
-    searchRequest = CreateObject("roUrlTransfer")
-    searchRequest.SetURL(getAuthServer() + "?username="+ RegRead("Username") + "&password=" + RegRead("Password") +"&site=" + getLoginSite())
-    response = ParseJson(searchRequest.GetToString())
-    if response.id<>invalid then
-        m.response=response
-        loadSchedule(screen)
+    screen.SetTitle("Error connecting to" + RegRead("Service"))
+    if m.response=invalid then
+        'error connecting to service
+        screen.setText("Cannot connect to service")
+        screen.AddButton(1,"Exit")
+    else if  m.response.error<>invalid then
+        'error from server
+        'show error on screen
+        screen.setText(m.response.error)
+        screen.AddButton(2,"Settings")
     endif
-    screen.close()
-    'print "response: "; response
-    return response 
-End Function
+    screen.show()
+    while true
+        msg = wait(0, screen.GetMessagePort())
+        'print msg
+        if (type(msg) = "roMessageDialogEvent")
+            if (msg.isButtonPressed())
+                if msg.getIndex()=1
+                    return 1
+                else
+                    screen.close()
+                    showConfigScreen(true)
+                    return 2
+                endif
+            endif      
+        endif
+    end while
+end function
 '*************************************************************
 '** get schedule json and build channel list and sports schedule
 '*************************************************************

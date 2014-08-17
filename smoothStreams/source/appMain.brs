@@ -5,13 +5,14 @@
 
 Sub Main()
     facade = CreateObject("roParagraphScreen")
-    facade.AddParagraph("please wait...")
     facade.Show()
-    loggedIn=false
-    while not loggedIn
-        loggedIn=showHomeScreen()
-    end while   
-    facade.Close()    
+    loadChannelLogos()
+    loginResult=login()
+    if loginResult=true then
+        showHomeScreen()
+    else
+        facade.Close()
+    end if    
 End Sub
 
 '*************************************************************
@@ -89,34 +90,18 @@ Function showHomeScreen() as boolean
     screen.SetListStyle("flat-category")
     screen.SetFocusedListItem(1)
     screen.show()
-    ' Check for config and see if first run.
-    if NOT checkConfig() then
-        showConfigScreen()
-        return false
-    else   
-        'Try to Connect to service.
-        loadChannelLogos()
-        m.response=login()
-        print m.response
-        if m.response.error<>invalid then
-            'show configuration screen
-            showConfigScreen()
-            return false
-        else
-            'else show home screen
-            while true
-                msg = wait(0, screen.GetMessagePort())
-                print msg
-                if (type(msg) = "roPosterScreenEvent")
-                    if (msg.isListItemSelected())
-                        m.mainmenuFunctions[msg.GetIndex()]()
-                    else if msg.isScreenClosed() then
-                        return true
-                    endif      
-                endif
-            end while
+    'show home screen
+    while true
+        msg = wait(0, screen.GetMessagePort())
+        'print msg
+        if (type(msg) = "roPosterScreenEvent")
+            if (msg.isListItemSelected())
+                m.mainmenuFunctions[msg.GetIndex()]()
+            else if msg.isScreenClosed() then
+                return true
+            endif      
         endif
-    endif
+    end while
 End Function
 
 Function InitMainList() as object

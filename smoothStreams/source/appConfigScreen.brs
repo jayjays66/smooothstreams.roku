@@ -3,8 +3,8 @@
 '** Display the config screen and wait for events from 
 '** the screen.
 '******************************************************
-Function showConfigScreen(s=invalid) As void
-    m.menuFunctions = [
+Function showConfigScreen(fromStartup=false) As void
+    menuFunctions = [
         selectLocation,
         enterUsername,
         enterPassword,
@@ -12,7 +12,6 @@ Function showConfigScreen(s=invalid) As void
         enableHD,
         mainMenu
     ]
-    if s<>invalid m.mainScreen=s
     screen = CreateObject("roListScreen")
     port = CreateObject("roMessagePort")
     screen.SetMessagePort(port)
@@ -20,18 +19,31 @@ Function showConfigScreen(s=invalid) As void
     screen.SetBreadcrumbText("Menu","Settings")
     contentList = InitContentList()
     screen.SetContent(contentList)
-    m.screen=screen
+    loginItem={
+            Title: "Login",
+            ID: "0",           
+            ShortDescriptionLine1: "Attempt to login"
+        }
+    screen.AddContent(loginItem)
     screen.show()
     while (true)
         msg = wait(0, port)
         if (type(msg) = "roListScreenEvent")
+            'print msg.GetMessage()
             if (msg.isListItemSelected())
-                m.menuFunctions[msg.GetIndex()]()
-                contentList = InitContentList()
-                m.screen.SetContent(contentList)
-                m.screen.SetFocusedListItem(msg.GetIndex())
+                if msg.GetIndex()=4 and fromStartup then
+                    return
+                else if msg.GetIndex()=4 then
+                    login()
+                    return
+                else
+                    menuFunctions[msg.GetIndex()]()
+                    screen.SetFocusedListItem(msg.GetIndex())
+                end if
             else if msg.isScreenClosed() then
-                return
+                if Not fromStartup then
+                    return
+                endif
             endif      
         endif
     end while
