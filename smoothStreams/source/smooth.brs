@@ -102,6 +102,10 @@ Function loadSchedule(screen) as void
             videoclip.Title = ch.name
             videoclip.HDPosterUrl="http://www.lyngsat-logo.com/logo/tv/" + m.channel_logos["c" + ch.channel_id]
             videoclip.SDPosterURL="http://www.lyngsat-logo.com/logo/tv/" + m.channel_logos["c" + ch.channel_id]
+            videoclip.framerate=60
+            videoclip.isHD=true
+            videoclip.live=true
+            
             'videoclip.HDPosterUrl= "http://smoothstreams.tv/schedule/includes/images/uploads/" + ch.img
             'videoclip.SDPosterUrl= "http://smoothstreams.tv/schedule/includes/images/uploads/" + ch.img
             'create show array
@@ -205,8 +209,10 @@ Function GetServerUrlByName() as string
     serverLocation=RegRead("Server Location")
     if serverLocation ="EU Random"
         return "dEU.SmoothStreams.tv"
-    else if serverLocation = "EU Amsterdam"
-        return "d88.SmoothStreams.tv"
+    else if serverLocation = "EU NL i3d"
+        return "d77.SmoothStreams.tv"
+    else if serverLocation = "EU NL Evo"
+        return "d71.SmoothStreams.tv"
     else if serverLocation = "EU London"
         return "d11.SmoothStreams.tv"
     else if serverLocation = "US East"

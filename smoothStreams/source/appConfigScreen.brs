@@ -34,11 +34,16 @@ Function showConfigScreen(fromStartup=false) As void
                 if msg.GetIndex()=4 and fromStartup then
                     return
                 else if msg.GetIndex()=4 then
-                    login()
-                    return
+                    if checkConfig() then
+                        login()
+                        return
+                    end if
                 else
                     menuFunctions[msg.GetIndex()]()
                     screen.SetFocusedListItem(msg.GetIndex())
+                    contentList = InitContentList()
+                    screen.SetContent(contentList)
+                    screen.Show()
                 end if
             else if msg.isScreenClosed() then
                 if Not fromStartup then
@@ -213,7 +218,7 @@ Function InitContentList() as object
 End Function
 
 Function InitLocationList() as object
-    contentList=["EU Random","EU Amsterdam","EU London","US East","US West","US All","Asia"]
+    contentList=["EU Random","EU NL i3d","EU NL Evo","EU London","US East","US West","US All","Asia"]
     return contentList
 End Function
 
