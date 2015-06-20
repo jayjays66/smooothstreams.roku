@@ -19,7 +19,7 @@ End Function
 
 Function showVideo(channel) as void
     'print "Displaying video: "
-    print channel.StreamUrls
+    'print channel.StreamUrls
     p = CreateObject("roMessagePort")
     video = CreateObject("roVideoScreen")
     video.setMessagePort(p)

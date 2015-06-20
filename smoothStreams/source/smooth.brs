@@ -170,20 +170,7 @@ End Function
 '*************************************************************
 Function getAuthServer() as string
     serviceName = RegRead("Service")
-    print serviceName
-    if serviceName ="MyStreams & uSport" then
-        return "http://smoothstreams.tv/login.php"
-    else if serviceName = "Live247" then
-        return "http://smoothstreams.tv/login.php"
-    else if serviceName = "StarStreams" then
-        return "http://starstreams.tv/t.php"
-    else if serviceName = "MMA-TV / MyShout" then
-        return "http://www.mma-tv.net/loginForm.php"
-    else if serviceName = "None" then
-        return "http://starstreams.tv/t.php"
-    else
-        return ""
-    endif
+    return "http://smoothstreams.tv/schedule/admin/dash_new/hash_api.php"
 End Function
 '*************************************************************
 '** get login site given current service setting
@@ -191,13 +178,15 @@ End Function
 Function getLoginSite() as string
     serviceName = RegRead("Service")
     if serviceName ="MyStreams & uSport" then
-        return "mystreams"
+        return "viewms"
     else if serviceName = "Live247" then
-        return "live247"
+        return "view1247"
     else if serviceName = "StarStreams" then
-        return "starstreams"
+        return "viewss"
     else if serviceName = "MMA-TV / MyShout" then
-        return "mma-tv"
+        return "viewmma"
+     else if serviceName = "StreamTVnow" then
+        return "viewstvn"
     else
         return ""
     endif
@@ -234,13 +223,13 @@ End Function
 Function GetServicePort() as string
     serviceName=RegRead("Service")
     if serviceName = "MMA-TV / MyShout" then
-        port = "5545"
+        port = "9100"
     else if serviceName = "StarStreams" then
-        port = "39355"
+        port = "9100"
     else if serviceName = "Live247" then
-        port = "12935"
+        port = "9100"
     else if serviceName = "MyStreams & uSport" then
-        port = "29355"
+        port = "9100"
     else
         'print "Invalid service name supplied to GetServicePort"
     endif
@@ -251,7 +240,7 @@ End Function
 '*************************************************************
 Function getChannelUrl(channelNumber) as object
     urlArray=CreateObject("roArray",2,false)
-    urlArray.push("http://" + GetServerUrlByName() + ":" + GetServicePort() + "/view/ch" + padChannelNumber(channelNumber) + "q1.stream/playlist.m3u8?u=" + AnyToString(m.response.id) + "&p=" + AnyToString(m.response.password))
+    urlArray.push("http://" + GetServerUrlByName() + ":" + GetServicePort() + "/view/ch" + padChannelNumber(channelNumber) + "q1.stream/playlist.m3u8?wmsAuthSign=" + m.response.hash)
     'urlArray.push("http://" + GetServerUrlByName() + ":" + GetServicePort() + "/view/ch" + padChannelNumber(channelNumber) + "q2.stream/playlist.m3u8?u=" + AnyToString(m.response.id) + "&p=" + AnyToString(m.response.password))
     return urlArray
 End Function
