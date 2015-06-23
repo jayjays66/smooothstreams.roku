@@ -20,7 +20,7 @@ Function showConfigScreen(fromStartup=false) As void
     contentList = InitContentList()
     screen.SetContent(contentList)
     loginItem={
-            Title: "Login",
+            Title: "Login and back to menu",
             ID: "0",           
             ShortDescriptionLine1: "Attempt to login"
         }
@@ -43,10 +43,12 @@ Function showConfigScreen(fromStartup=false) As void
                     screen.SetFocusedListItem(msg.GetIndex())
                     contentList = InitContentList()
                     screen.SetContent(contentList)
+                    screen.AddContent(loginItem)
                     screen.Show()
                 end if
             else if msg.isScreenClosed() then
                 if Not fromStartup then
+                    login()
                     return
                 endif
             endif      
@@ -218,12 +220,12 @@ Function InitContentList() as object
 End Function
 
 Function InitLocationList() as object
-    contentList=["EU Random","EU NL i3d","EU NL Evo","EU London","US East","US West","US All","Asia"]
+    contentList=["EU Random","EU NL i3d","EU NL Evo","EU London","US East","US East - NJ","US East - VA","US West - LA","US All","Asia"]
     return contentList
 End Function
 
 Function InitServiceList() as object
-    contentList=["MyStreams & uSport","Live247","StarStreams","MMA-TV / MyShout"]
+    contentList=["MyStreams & uSport","Live247","StarStreams","MMA-TV / MyShout","StreamTVnow"]
     return contentList
 End Function
 

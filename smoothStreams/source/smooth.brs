@@ -180,7 +180,7 @@ Function getLoginSite() as string
     if serviceName ="MyStreams & uSport" then
         return "viewms"
     else if serviceName = "Live247" then
-        return "view1247"
+        return "view247"
     else if serviceName = "StarStreams" then
         return "viewss"
     else if serviceName = "MMA-TV / MyShout" then
@@ -206,12 +206,16 @@ Function GetServerUrlByName() as string
         return "d11.SmoothStreams.tv"
     else if serverLocation = "US East"
         return "dNAE.SmoothStreams.tv"
-    else if serverLocation = "US West"
-        return "dNAW.SmoothStreams.tv"
+    else if serverLocation = "US West - LA"
+        return "d99.SmoothStreams.tv"
     else if serverLocation = "US All"
         return "dNA.SmoothStreams.tv"
     else if serverLocation = "Asia"
-        return "dSG.SmoothStreams.tv"
+        return "d99.SmoothStreams.tv"
+    else if serverLocation = "US East - NJ"
+        return "d21.SmoothStreams.tv"
+    else if serverLocation = "US East - VA"
+        return "d22.SmoothStreams.tv"
     else
         'print "Invalid serverName passed to GetServerUrlByName"
         return ""
