@@ -102,59 +102,60 @@ Function loadSchedule(screen) as void
             videoclip.Title = ch.name
             videoclip.HDPosterUrl="http://www.lyngsat-logo.com/logo/tv/" + m.channel_logos["c" + ch.channel_id]
             videoclip.SDPosterURL="http://www.lyngsat-logo.com/logo/tv/" + m.channel_logos["c" + ch.channel_id]
-            videoclip.framerate=60
             videoclip.isHD=true
             videoclip.live=true
             
             'videoclip.HDPosterUrl= "http://smoothstreams.tv/schedule/includes/images/uploads/" + ch.img
             'videoclip.SDPosterUrl= "http://smoothstreams.tv/schedule/includes/images/uploads/" + ch.img
             'create show array
-            for each sh in ch.items
-                'dates/time from guide json need converting to local
-                showEndTime=convertDateSeconds(sh.end_time)
-                showStartTime=convertDateSeconds(sh.time)
-                'print currTime; " : " showEndTime;
-                if currTime<showEndTime
-                    'print sh.name; " : "; sh.end_time;
-                    'Now showing
-                    if currTime>showStartTime
-                        videoclip.shortDescriptionLine1="Now Showing"
-                        videoclip.shortDescriptionLine2= sh.name
+            if NOT ch.items=invalid
+                for each sh in ch.items
+                    'dates/time from guide json need converting to local
+                    showEndTime=convertDateSeconds(sh.end_time)
+                    showStartTime=convertDateSeconds(sh.time)
+                    'print currTime; " : " showEndTime;
+                    if currTime<showEndTime
+                        'print sh.name; " : "; sh.end_time;
+                        'Now showing
+                        if currTime>showStartTime
+                            videoclip.shortDescriptionLine1="Now Showing"
+                            videoclip.shortDescriptionLine2= sh.name
+                        endif
+                        videoShow=CreateObject("roAssociativeArray")
+                        videoShow.StreamBitrates = ["0"]
+                        videoShow.StreamUrls = getChannelURL(ch.channel_id)
+                        videoShow.StreamQualities = ["HD"]
+                        videoShow.StreamFormat = "hls"
+                        videoShow.Title = sh.name
+                        videoShow.Description=sh.description
+                        videoShow.Categories=sh.category
+                        videoShow.Live=true
+                        videoShow.isHd=true
+                        videoShow.HDBranded=true
+                        videoShow.length=strToI(sh.runtime)*60
+                        videoShow.ShortDescriptionLine1=sh.name
+                        videoShow.ShortDescriptionLine2=convertDate(sh.time)
+                        videoShow.time=sh.time
+                        'replace space in network
+                        r = CreateObject("roRegex", " ", "i")
+                        sh.network=r.ReplaceAll(sh.network, "")
+                        if m.channel_logos.DoesExist(sh.network)
+                            logoUrl="http://www.lyngsat-logo.com/logo/tv/" + m.channel_logos[sh.network]
+                        else
+                            logoUrl="http://www.lyngsat-logo.com/logo/tv/" + m.channel_logos["c" + ch.channel_id]    
+                        endif 
+                        videoShow.HDPosterUrl=logoUrl
+                        videoShow.SDPosterUrl=logoUrl 
+                        'videoShow.HDPosterUrl= "http://smoothstreams.tv/schedule/includes/images/uploads/" + ch.img
+                        'videoShow.SDPosterUrl= "http://smoothstreams.tv/schedule/includes/images/uploads/" + ch.img
+                        if not m.categoryAsArray.DoesExist(sh.category) then
+                            m.categoryAsArray.AddReplace(sh.category,[videoShow]) 
+                        else
+                            m.categoryAsArray[sh.category].push(videoShow)
+                        endif
                     endif
-                    videoShow=CreateObject("roAssociativeArray")
-                    videoShow.StreamBitrates = ["0"]
-                    videoShow.StreamUrls = getChannelURL(ch.channel_id)
-                    videoShow.StreamQualities = ["HD"]
-                    videoShow.StreamFormat = "hls"
-                    videoShow.Title = sh.name
-                    videoShow.Description=sh.description
-                    videoShow.Categories=sh.category
-                    videoShow.Live=true
-                    videoShow.isHd=true
-                    videoShow.HDBranded=true
-                    videoShow.length=strToI(sh.runtime)*60
-                    videoShow.ShortDescriptionLine1=sh.name
-                    videoShow.ShortDescriptionLine2=convertDate(sh.time)
-                    videoShow.time=sh.time
-                    'replace space in network
-                    r = CreateObject("roRegex", " ", "i")
-                    sh.network=r.ReplaceAll(sh.network, "")
-                    if m.channel_logos.DoesExist(sh.network)
-                        logoUrl="http://www.lyngsat-logo.com/logo/tv/" + m.channel_logos[sh.network]
-                    else
-                        logoUrl="http://www.lyngsat-logo.com/logo/tv/" + m.channel_logos["c" + ch.channel_id]    
-                    endif 
-                    videoShow.HDPosterUrl=logoUrl
-                    videoShow.SDPosterUrl=logoUrl 
-                    'videoShow.HDPosterUrl= "http://smoothstreams.tv/schedule/includes/images/uploads/" + ch.img
-                    'videoShow.SDPosterUrl= "http://smoothstreams.tv/schedule/includes/images/uploads/" + ch.img
-                    if not m.categoryAsArray.DoesExist(sh.category) then
-                        m.categoryAsArray.AddReplace(sh.category,[videoShow]) 
-                    else
-                        m.categoryAsArray[sh.category].push(videoShow)
-                    endif
-                endif
-            end for
+                end for
+            end if
             m.channelArray.Push(videoclip)
         endif
     end for
@@ -227,13 +228,13 @@ End Function
 Function GetServicePort() as string
     serviceName=RegRead("Service")
     if serviceName = "MMA-TV / MyShout" then
-        port = "9100"
+        port = "3645"
     else if serviceName = "StarStreams" then
-        port = "9100"
+        port = "3665"
     else if serviceName = "Live247" then
-        port = "9100"
+        port = "3625"
     else if serviceName = "MyStreams & uSport" then
-        port = "9100"
+        port = "3655"
     else
         'print "Invalid service name supplied to GetServicePort"
     endif
@@ -244,7 +245,7 @@ End Function
 '*************************************************************
 Function getChannelUrl(channelNumber) as object
     urlArray=CreateObject("roArray",2,false)
-    urlArray.push("http://" + GetServerUrlByName() + ":" + GetServicePort() + "/view/ch" + padChannelNumber(channelNumber) + "q1.stream/playlist.m3u8?wmsAuthSign=" + m.response.hash)
+    urlArray.push("http://" + GetServerUrlByName() + ":" + GetServicePort() + "/" + getLoginSite() + "/ch" + padChannelNumber(channelNumber) + ".smil/playlist.m3u8?wmsAuthSign=" + m.response.hash)
     'urlArray.push("http://" + GetServerUrlByName() + ":" + GetServicePort() + "/view/ch" + padChannelNumber(channelNumber) + "q2.stream/playlist.m3u8?u=" + AnyToString(m.response.id) + "&p=" + AnyToString(m.response.password))
     return urlArray
 End Function
