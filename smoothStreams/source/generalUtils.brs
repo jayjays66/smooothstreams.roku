@@ -223,7 +223,7 @@ Function strTrim(str As String) As String
     return st.Trim()
 End Function
 
-Function padChannelNumber(i) as string
+Function padNumber(i) as string
     if strToI(i)<10 then
         return "0" + AnyToString(i)
     else
@@ -246,22 +246,44 @@ Function returnDate(a) as integer
     ''print "return datetime is "; dt
     return dt.asSeconds()
 End Function
+
+Function returnId(a) as integer
+    return strToI(a.Id)
+End Function
+
+Function returnTitle(a) as string
+    return a.title
+End Function
 '*************************************************************
 '** Converts date/time string from json to local date/time string
 '*************************************************************
 function convertDate(dateString) as string
     dt=CreateObject("roDateTime")
     dt.fromISO8601String(dateString)
-    dt.fromSeconds(dt.asSeconds()+14400)
+    dt.fromSeconds(dt.asSeconds() + (60 * 60 * 5))
     dt.toLocalTime()
     ''print "convert datetime is "; dt.asDateStringNoParam()
     return dt.asDateStringNoParam() + " " + padTime(dt.getHours()) + ":" + padTime(dt.getMinutes())
 end function
+
 function convertDateSeconds(dateString) as integer
     dt=CreateObject("roDateTime")
     dt.fromISO8601String(dateString)
-    dt.fromSeconds(dt.asSeconds()+14400)
+    dt.fromSeconds(dt.asSeconds() + (60 * 60 * 5))
     dt.toLocalTime()
     ''print "convert datetime is "; dt.asDateStringNoParam()
     return dt.asSeconds()
+end function
+
+function convertDateStringToISO8601(dateString) as string
+
+    years = left(dateString,4)
+    month = mid(dateString,5,2)
+    day = mid(datestring,7,2)
+    hours = mid(dateString,9,2)
+    minutes = mid(dateString,11,2)
+    seconds = mid(dateString,13,2)
+    
+    return years + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
+
 end function

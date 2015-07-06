@@ -1,5 +1,117 @@
-function loadChannelLogos() as void
-    m.channel_logos={
+function smoothservice() as object
+    
+    constants={
+        AUTH_URL: "http://smoothstreams.tv/schedule/admin/dash_new/hash_api.php",
+        FEED_URL: "http://cdn.smoothstreams.tv/schedule/feed.json?timezone=UTC"
+    }
+    
+    loginResult=""
+    
+    return {
+      constants: constants,
+      sites: smoothservice_sites(),
+      servers: smoothservice_servers(),
+      login: smoothService_authenticate,
+      loginResult: loginResult,
+      schedule: smoothService_getSchedule,
+      logos: smoothService_channelLogos(),
+    }
+    
+end function
+    
+    
+    
+function smoothService_authenticate(username as string, password as string, site as string) as object
+    
+    
+    response = {}
+    
+    ' try to login
+    loginUrlTransfer = CreateObject("roUrlTransfer")
+    loginUrl = m.constants.AUTH_URL + "?username=" + loginUrlTransfer.escape(username)
+    loginUrl = loginUrl + "&password=" + loginUrlTransfer.escape(password)
+    loginUrl = loginUrl + "&site=" + loginUrlTransfer.escape(site)
+    loginUrlTransfer.SetURL(loginUrl)
+    response = ParseJson(loginUrlTransfer.GetToString())
+    m.loginResult = response
+    return m
+    
+end function
+    
+function smoothService_getSchedule() as object
+
+    searchRequest = CreateObject("roUrlTransfer")
+    searchRequest.SetURL(m.constants.FEED_URL)       
+    response = ParseJson(searchRequest.GetToString())
+    return response
+    
+end function
+    
+function smoothService_sites() as object
+    return {
+        ms: {
+          name: "MyStreams & uSport",
+          service: "viewms",
+          port: "3655"
+        },
+        l247: {
+          name: "Live 247",
+          service: "view247",
+          port: "3625"
+        },
+        ss: {
+          name: "StarStreams",
+          service: "viewss",
+          port: "3665"
+        },
+        mma: {
+          name: "MMA-TV / MyShout",
+          service: "viewmma",
+          port: "3645"
+        },
+        stvn: {
+          name: "StreamTVnow",
+          service: "viewstvn",
+          port: "3615"
+        }
+    }
+end function
+    
+function smoothService_servers() as object
+    return {
+      EUAmsterdam: {
+        name: "EU Amsterdam",
+        url: "d77.SmoothStreams.tv"
+      },
+      EUAmsterdam2: {
+        name: "EU Amsterdam 2",
+        url: "d71.SmoothStreams.tv"
+      },
+      EULondon: {
+        name: "EU London",
+        url: "d11.SmoothStreams.tv"
+      }
+      USEast: {
+        name: "US East",
+        url: "d21.SmoothStreams.tv"
+      }
+      USEastVA: {
+        name: "US East VA",
+        url: "d22.SmoothStreams.tv"
+      }
+      USWest: {
+        name: "US West",
+        url: "d99.SmoothStreams.tv"
+      }
+      Asia: {
+        name: "Asia",
+        url: "dSG.SmoothStreams.tv"
+      }
+    }
+end function
+    
+function smoothService_channelLogos() as object
+   return {
     c1:"nn/nbc_us_central.png",
     c2:"cc/cbs.png",
     c3:"cc/cartoon_network_global.png",
@@ -120,6 +232,7 @@ function loadChannelLogos() as void
     TNT:"tt/tnt_us.png",
     TSN:"tt/tsn_ca.png",
     TSN2:"tt/tsn2.png"
-    
     }
 end function
+
+    
