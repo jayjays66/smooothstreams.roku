@@ -81,31 +81,51 @@ function smoothService_servers() as object
     return {
       EUAmsterdam: {
         name: "EU Amsterdam",
-        url: "d77.SmoothStreams.tv"
+        url: "dEU.NL1.SmoothStreams.tv"
       },
       EUAmsterdam2: {
         name: "EU Amsterdam 2",
-        url: "d71.SmoothStreams.tv"
+        url: "dEU.NL2.SmoothStreams.tv"
+      },
+      EUFrankfurt: {
+        name: "EU DE Frankfurt",
+        url: "dEU.DE1.SmoothStreams.tv",
+        port: "9100"
       },
       EULondon: {
         name: "EU London",
-        url: "d11.SmoothStreams.tv"
-      }
+        url: "dEU.UK.SmoothStreams.tv"
+      },
       USEast: {
         name: "US East",
-        url: "d21.SmoothStreams.tv"
-      }
+        url: "dNAe.SmoothStreams.tv"
+      },
+      USEastNJ: {
+        name: "US East NJ",
+        url: "dNAE1.SmoothStreams.tv"
+      },
       USEastVA: {
         name: "US East VA",
-        url: "d22.SmoothStreams.tv"
-      }
+        url: "dNAE2.SmoothStreams.tv"
+      },
       USWest: {
         name: "US West",
-        url: "d99.SmoothStreams.tv"
-      }
+        url: "dNAw.SmoothStreams.tv"
+      },
+      CANEastOne: {
+        name: "CAN East 1",
+        url: "dNAE3.SmoothStreams.tv",
+        port: "9100"
+      },
+      CANEastTwo: {
+        name: "CAN East 2",
+        url: "dNAE4.SmoothStreams.tv",
+        port: "9100"
+      },
       Asia: {
         name: "Asia",
-        url: "dSG.SmoothStreams.tv"
+        url: "dSG.SmoothStreams.tv",
+        port: "9100"
       }
     }
 end function

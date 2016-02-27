@@ -108,7 +108,14 @@ end function
 
 function smoothScheduleService_buildChannelUrl(channelNumber) as string
     channelNumber = padNumber(channelNumber)
-    return "http://" + m.config.server().url + ":" + m.config.site().port + "/" + m.config.site().service + "/ch" + channelNumber + ".smil/playlist.m3u8?wmsAuthSign=" + m.service.loginResult.hash   
+    ' some servers have port override
+    if m.config.server().port <> invalid then
+        port = m.config.server().port
+    else
+        port = m.config.site().port
+    end if
+    
+    return "http://" + m.config.server().url + ":" + port + "/" + m.config.site().service + "/ch" + channelNumber + ".smil/playlist.m3u8?wmsAuthSign=" + m.service.loginResult.hash   
 end function
 
 function smoothScheduleService_refresh()
