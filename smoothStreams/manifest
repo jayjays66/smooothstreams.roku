@@ -1,7 +1,7 @@
 title=smoothStreams
 major_version=1
 minor_version=0
-build_version=231
+build_version=232
 mm_icon_focus_hd=pkg:/images/MainMenu_Icon_Smooth_Center.png
 mm_icon_side_hd=pkg:/images/MainMenu_Icon_Smooth_Side_H.png
 mm_icon_focus_sd=pkg:/images/MainMenu_Icon_CenterS_SD43.png
