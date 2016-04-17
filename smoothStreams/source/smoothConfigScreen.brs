@@ -51,8 +51,15 @@ function smoothConfigScreen_list() as object
             action: smoothConfigScreen_selectService
         },
         {
+            Title:  "Quality",
+            ID: "5",
+            ShortDescriptionLine1: "Select Quality",
+            ShortDescriptionLine2: m.config.Quality.GET(),
+            action: smoothConfigScreen_selectQuality
+        },
+        {
             Title: "Login and back to menu",
-            ID: "5",           
+            ID: "6",           
             ShortDescriptionLine1: "Attempt to login",
             action: smoothConfigScreen_mainMenu
         }
@@ -76,7 +83,7 @@ function smoothConfigScreen_eventLoop() as void
         msg = wait(0, m.port)
         if type(msg) = "roListScreenEvent" then
             if msg.isListItemSelected()
-                if msg.GetIndex()=4 then
+                if msg.GetIndex()=5 then
                     m.screen.close()
                     loginMainMenu()
                 end if
@@ -129,6 +136,22 @@ function smoothConfigScreen_enterPassword()
     end if
 end function
 
+function smoothConfigScreen_selectQuality()
+    settingSelect = smoothSettingSelect()
+    settingselect.breadcrumb1 = "Settings"
+    settingSelect.breadcrumb2 = "Set Quality"
+    qualityItems = []
+    qualityItems.push({Title:"HD",value:"q1"})
+    qualityItems.Push({Title:"SD",value:"q2"})
+    settingSelect.list = qualityItems
+    settingSelect.setup().show().eventLoop()
+    if (settingSelect.selectedIndex>=0) then
+        selectedItem = qualityItems[settingSelect.selectedIndex].value
+        config = GetGlobalAA().config
+        config.Quality.SET(selectedItem)
+    end if
+end function
+
 function smoothConfigScreen_selectService()
     settingSelect = smoothSettingSelect()
     settingselect.breadcrumb1 = "Settings"
@@ -146,6 +169,7 @@ function smoothConfigScreen_selectService()
         config = GetGlobalAA().config
         config.service.SET(selectedItem)
     end if
+    
 end function
 
 function smoothConfigScreen_mainMenu() as void

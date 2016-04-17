@@ -260,7 +260,7 @@ End Function
 function convertDate(dateString) as string
     dt=CreateObject("roDateTime")
     dt.fromISO8601String(dateString)
-    dt.fromSeconds(dt.asSeconds() + (60 * 60 * 5))
+    dt.fromSeconds(dt.asSeconds() + (60 * 60 * 4))
     dt.toLocalTime()
     ''print "convert datetime is "; dt.asDateStringNoParam()
     return dt.asDateStringNoParam() + " " + padTime(dt.getHours()) + ":" + padTime(dt.getMinutes())
@@ -269,7 +269,7 @@ end function
 function convertDateSeconds(dateString) as integer
     dt=CreateObject("roDateTime")
     dt.fromISO8601String(dateString)
-    dt.fromSeconds(dt.asSeconds() + (60 * 60 * 5))
+    dt.fromSeconds(dt.asSeconds() + (60 * 60 * 4))
     dt.toLocalTime()
     ''print "convert datetime is "; dt.asDateStringNoParam()
     return dt.asSeconds()

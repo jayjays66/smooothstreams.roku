@@ -12,6 +12,7 @@ function smoothConfig(smoothservice_) as object
         username: {GET: smoothConfig_getUsername, SET: smoothConfig_setUsername},
         password: {GET: smoothConfig_getPassword, SET: smoothConfig_setPassword},
         service: {GET: smoothConfig_getService, SET: smoothConfig_setService},
+        quality: {GET: smoothConfig_getQuality, SET: smoothConfig_setQuality}
         site: smoothConfig_getSite,
         server: smoothConfig_getServer,
         validate : smoothConfig_validate,
@@ -72,6 +73,15 @@ function smoothConfig_getServer()
     else
         return {name:""}
     end if  
+end function
+
+function smoothConfig_getQuality() as string
+    return RegRead("Quality")
+end function
+    
+function smoothConfig_setQuality(quality as string)
+    RegWrite("Quality", quality)
+    return m
 end function
 
 function smoothConfig_validate()

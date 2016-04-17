@@ -22,8 +22,10 @@ end function
 function smoothScheduleService_channels() as object
     channels = []
     'stop
+    
     for each channelKey in m.scheduleJson
         channel = m.scheduleJson[channelKey]
+        'print channel.channel_id + ": " + channel.name
         channels.push({
             StreamBitrates : ["0"],
             StreamUrls : [m.buildChannelUrl(channel.channel_id)],
@@ -62,8 +64,8 @@ function smoothScheduleService_schedule()
                 if currTime<showEndTime then
                     'Now showing
                     if currTime>showStartTime
-                        m.channels[strToI(programme.channel)].shortDescriptionLine1 = "Now Showing"
-                        m.channels[strToI(programme.channel)].shortDescriptionLine2 = programme.name
+                        m.channels[strToI(programme.channel)-1].shortDescriptionLine1 = "Now Showing"
+                        m.channels[strToI(programme.channel)-1].shortDescriptionLine2 = programme.name
                     endif
                     ' Programme Associative Array    
                     programmeAA = {
@@ -114,8 +116,8 @@ function smoothScheduleService_buildChannelUrl(channelNumber) as string
     else
         port = m.config.site().port
     end if
-    
-    return "http://" + m.config.server().url + ":" + port + "/" + m.config.site().service + "/ch" + channelNumber + ".smil/playlist.m3u8?wmsAuthSign=" + m.service.loginResult.hash   
+    quality = m.config.Quality.GET()
+    return "http://" + m.config.server().url + ":" + port + "/" + m.config.site().service + "/ch" + channelNumber + quality + ".stream/playlist.m3u8?wmsAuthSign=" + m.service.loginResult.hash   
 end function
 
 function smoothScheduleService_refresh()
