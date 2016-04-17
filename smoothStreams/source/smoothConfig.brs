@@ -76,7 +76,11 @@ function smoothConfig_getServer()
 end function
 
 function smoothConfig_getQuality() as string
+    if RegRead("Quality") = invalid then
+        smoothConfig_setQuality("q1")
+    end if
     return RegRead("Quality")
+        
 end function
     
 function smoothConfig_setQuality(quality as string)
