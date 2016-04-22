@@ -131,8 +131,10 @@ function smoothScheduleService_getIconUrl(channelNumber, network)
     POSTER_URL_PREFIX = "http://www.lyngsat-logo.com/logo/tv/"
     if network <> "" AND m.service.logos.DoesExist(network)
          return POSTER_URL_PREFIX + m.service.logos[network]
+    else if m.service.logos.DoesExist("c" + channelNumber)
+         return POSTER_URL_PREFIX + m.service.logos["c" + channelNumber]
     else
-         return POSTER_URL_PREFIX + m.service.logos["c" + channelNumber]   
+        return ""  
     endif  
 end function
 
