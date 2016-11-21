@@ -96,7 +96,12 @@ function smoothService_servers() as object
       },
       EULondon: {
         name: "EU London",
-        url: "dEU.UK.SmoothStreams.tv",
+        url: "dEU.UK1.SmoothStreams.tv",
+        port:   "9100"
+      },
+      EULondon2: {
+        name: "EU London 2",
+        url: "dEU.UK2.SmoothStreams.tv",
         port:   "9100"
       },
       USEast: {
