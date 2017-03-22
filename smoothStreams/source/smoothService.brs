@@ -1,8 +1,8 @@
 function smoothservice() as object
     
     constants={
-        AUTH_URL: "http://smoothstreams.tv/schedule/admin/dash_new/hash_api.php",
-        FEED_URL: "http://cdn.smoothstreams.tv/schedule/feed.json?timezone=UTC"
+        AUTH_URL: "http://smoothstreams.tv/hash_api.php",
+        FEED_URL: "http://speed.guide.smoothstreams.tv/feed.json"
     }
     
     loginResult=""

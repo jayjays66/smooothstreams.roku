@@ -32,8 +32,8 @@ function smoothScheduleService_channels() as object
             StreamQualities : ["HD"],
             StreamFormat : "hls",
             Title : channel.name,
-            HDPosterUrl : m.getIconUrl(channel.channel_id,""),
-            SDPosterURL : m.getIconUrl(channel.channel_id,""),
+            HDPosterUrl : channel.img,
+            SDPosterURL : channel.img,
             isHD : true,
             live : true,
             Id : channel.channel_id
@@ -78,8 +78,8 @@ function smoothScheduleService_schedule()
                         Description: programme.description,
                         ShortDescriptionLine1: programme.name,
                         ShortDescriptionLine2: convertDate(programme.time),
-                        HDPosterUrl : m.getIconUrl(programme.channel,programme.network),
-                        SDPosterURL : m.getIconUrl(programme.channel,programme.network),
+                        HDPosterUrl : channel.img,
+                        SDPosterURL : channel.img,
                         isHD : true,
                         live : true,
                         time: programme.time
