@@ -39,6 +39,7 @@ function smoothScheduleScreen_show()
 end function
 
 function smoothScheduleScreen_eventLoop() as void
+    currList=m.categories[0]
     while(true)
         msg = wait(0, m.port)
        if (type(msg) = "roPosterScreenEvent")

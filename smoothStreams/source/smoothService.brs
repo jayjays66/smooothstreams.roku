@@ -1,7 +1,7 @@
 function smoothservice() as object
     
     constants={
-        AUTH_URL: "http://smoothstreams.tv/hash_api.php",
+        AUTH_URL: "http://auth.smoothstreams.tv/hash_api.php",
         FEED_URL: "http://speed.guide.smoothstreams.tv/feed.json"
     }
     
