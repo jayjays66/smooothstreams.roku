@@ -28,6 +28,10 @@ function smoothService_authenticate(username as string, password as string, site
     
     ' try to login
     loginUrlTransfer = CreateObject("roUrlTransfer")
+    if m.constants.AUTH_URL.inStr(0, "https") = 0
+        loginUrlTransfer.setCertificatesFile("common:/certs/ca-bundle.crt")
+        loginUrlTransfer.initClientCertificates()
+    end if
     loginUrl = m.constants.AUTH_URL + "?username=" + loginUrlTransfer.escape(username)
     loginUrl = loginUrl + "&password=" + loginUrlTransfer.escape(password)
     loginUrl = loginUrl + "&site=" + loginUrlTransfer.escape(site)
@@ -41,7 +45,11 @@ end function
 function smoothService_getSchedule() as object
 
     searchRequest = CreateObject("roUrlTransfer")
-    searchRequest.SetURL(m.constants.FEED_URL)       
+    if m.constants.FEED_URL.inStr(0, "https") = 0
+        searchRequest.setCertificatesFile("common:/certs/ca-bundle.crt")
+        searchRequest.initClientCertificates()
+    end if
+    searchRequest.SetURL(m.constants.FEED_URL)
     response = ParseJson(searchRequest.GetToString())
     return response
     
