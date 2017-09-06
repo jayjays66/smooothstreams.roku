@@ -2,7 +2,7 @@ function smoothservice() as object
     
     constants={
         AUTH_URL: "http://auth.smoothstreams.tv/hash_api.php",
-        FEED_URL: "http://speed.guide.smoothstreams.tv/feed.json"
+        FEED_URL: "http://guide.smoothstreams.tv/feed.json"
     }
     
     loginResult=""
@@ -41,8 +41,9 @@ end function
 function smoothService_getSchedule() as object
 
     searchRequest = CreateObject("roUrlTransfer")
-    searchRequest.SetURL(m.constants.FEED_URL)       
+    searchRequest.SetURL(m.constants.FEED_URL)
     response = ParseJson(searchRequest.GetToString())
+    'print response
     return response
     
 end function
@@ -104,25 +105,15 @@ function smoothService_servers() as object
         url: "dEU.UK2.SmoothStreams.tv",
         port:   "9100"
       },
-      USEast: {
-        name: "US East",
-        url: "dNAe.SmoothStreams.tv",
-        port:   "9100"
-      },
       USEastNJ: {
         name: "US East NJ",
         url: "dNAE1.SmoothStreams.tv",
-        port:   "9100"
+        port: "9100"
       },
       USEastVA: {
         name: "US East VA",
         url: "dNAE2.SmoothStreams.tv",
-        port:   "9100"
-      },
-      USWest: {
-        name: "US West",
-        url: "dNAw.SmoothStreams.tv",
-        port:   "9100"
+        port: "9100"
       },
       CANEastOne: {
         name: "CAN East 1",
@@ -137,6 +128,31 @@ function smoothService_servers() as object
       Asia: {
         name: "Asia",
         url: "dSG.SmoothStreams.tv",
+        port: "9100"
+      },
+      USEastNY: {
+        name: “US East NY”,
+        url: "dNAe6.smoothstreams.tv",
+        port: "9100"
+      },
+      USWestone: {
+        name: “US West PHX 1”,
+        url: "dNAw1.smoothstreams.tv",
+        port: "9100" 
+      },
+      USWesttwo: {
+        name: “US West LAX 2”,
+        url: "dNAw2.smoothstreams.tv",
+        port: "9100" 
+      },
+      USWestthree: {
+        name: “US West SJ 3”,
+        url: "dNAw3.smoothstreams.tv",
+        port: "9100"
+      },
+      USWestfour: {
+        name: “US West CHI 4”,
+        url: "dNAw4.smoothstreams.tv",
         port: "9100"
       }
     }
