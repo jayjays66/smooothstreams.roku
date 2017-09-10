@@ -1,5 +1,5 @@
 function smoothservice() as object
-    
+
     constants={
         AUTH_URL: "http://auth.smoothstreams.tv/hash_api.php",
         FEED_URL: "http://speed.guide.smoothstreams.tv/feed.json"
@@ -16,14 +16,11 @@ function smoothservice() as object
       schedule: smoothService_getSchedule,
       logos: smoothService_channelLogos(),
     }
-    
+
 end function
-    
-    
-    
+
 function smoothService_authenticate(username as string, password as string, site as string) as object
-    
-    
+
     response = {}
     
     ' try to login
@@ -35,18 +32,18 @@ function smoothService_authenticate(username as string, password as string, site
     response = ParseJson(loginUrlTransfer.GetToString())
     m.loginResult = response
     return m
-    
+
 end function
-    
+
 function smoothService_getSchedule() as object
 
     searchRequest = CreateObject("roUrlTransfer")
-    searchRequest.SetURL(m.constants.FEED_URL)       
+    searchRequest.SetURL(m.constants.FEED_URL)
     response = ParseJson(searchRequest.GetToString())
     return response
-    
+
 end function
-    
+
 function smoothService_sites() as object
     return {
         ms: {
@@ -76,72 +73,97 @@ function smoothService_sites() as object
         }
     }
 end function
-    
+
 function smoothService_servers() as object
     return {
       EUAmsterdam: {
         name: "EU Amsterdam",
-        url: "dEU.NL1.SmoothStreams.tv",
+        url: "deu-nl1.SmoothStreams.tv",
         port:   "9100"
       },
       EUAmsterdam2: {
         name: "EU Amsterdam 2",
-        url: "dEU.NL2.SmoothStreams.tv",
+        url: "deu-nl2.SmoothStreams.tv",
         port:   "9100"
       },
       EUFrankfurt: {
         name: "EU DE Frankfurt",
-        url: "dEU.DE1.SmoothStreams.tv",
+        url: "deu-de1.SmoothStreams.tv",
         port: "9100"
       },
-      EULondon: {
-        name: "EU London",
-        url: "dEU.UK1.SmoothStreams.tv",
+      EUFrankfurt: {
+        name: "EU DE 2",
+        url: "deu-de2.SmoothStreams.tv",
+        port: "9100"
+      },
+      EULondon1: {
+        name: "EU London 1",
+        url: "deu-uk1.SmoothStreams.tv",
         port:   "9100"
       },
       EULondon2: {
         name: "EU London 2",
-        url: "dEU.UK2.SmoothStreams.tv",
-        port:   "9100"
-      },
-      USEast: {
-        name: "US East",
-        url: "dNAe.SmoothStreams.tv",
+        url: "deu-uk2.SmoothStreams.tv",
         port:   "9100"
       },
       USEastNJ: {
         name: "US East NJ",
         url: "dNAE1.SmoothStreams.tv",
-        port:   "9100"
+        port: "9100"
       },
       USEastVA: {
         name: "US East VA",
-        url: "dNAE2.SmoothStreams.tv",
-        port:   "9100"
+        url: "dnae2.SmoothStreams.tv",
+        port: "9100"
       },
-      USWest: {
-        name: "US West",
-        url: "dNAw.SmoothStreams.tv",
-        port:   "9100"
+      USEastNY: {
+        name: "US East NY",
+        url: "dnae6.smoothstreams.tv",
+        port: "9100"
       },
       CANEastOne: {
         name: "CAN East 1",
-        url: "dNAE3.SmoothStreams.tv",
+        url: "dnae3.SmoothStreams.tv",
         port: "9100"
       },
       CANEastTwo: {
         name: "CAN East 2",
-        url: "dNAE4.SmoothStreams.tv",
+        url: "dnae4.SmoothStreams.tv",
         port: "9100"
       },
-      Asia: {
+      USWestPhx: {
+        name: "US West PHX",
+        url: "dnaw1.smoothstreams.tv",
+        port: "9100"
+      },
+      USWestLA: {
+        name: "US West LA",
+        url: "dnaw2.smoothstreams.tv",
+        port: "9100"
+      },
+      USWestSJ: {
+        name: "US West SJ",
+        url: "dnaw3.smoothstreams.tv",
+        port: "9100"
+      },
+      USWestChi: {
+        name: "US West CHI",
+        url: "dnaw4.smoothstreams.tv",
+        port: "9100"
+      },
+      Asia1: {
         name: "Asia",
-        url: "dSG.SmoothStreams.tv",
+        url: "dap1.SmoothStreams.tv",
+        port: "9100"
+      },
+      Asia2: {
+        name: "Asia 2",
+        url: "dap2.SmoothStreams.tv",
         port: "9100"
       }
     }
 end function
-    
+
 function smoothService_channelLogos() as object
    return {
     c1:"nn/nbc_us_central.png",
@@ -266,5 +288,3 @@ function smoothService_channelLogos() as object
     TSN2:"tt/tsn2.png"
     }
 end function
-
-    
